@@ -1,6 +1,7 @@
 import 'package:bloc_state_management/bloc/user_bloc/user_event.dart';
 import 'package:bloc_state_management/bloc/user_bloc/user_state.dart';
 import 'package:bloc_state_management/core/repository/user_repo.dart';
+import 'package:bloc_state_management/models/product_model.dart';
 import 'package:bloc_state_management/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,8 +20,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _getUser(Emitter<UserState> emit) async {
     emit(UserLoading());
     try {
-      final List<Users> user = await userRepository.getuser();
-      emit(UserLoaded(user: user));
+      final List<Products> product = await userRepository.getuser();
+      emit(UserLoaded(user: product));
     } catch (e) {
       emit(UserError(errorMsg: e.toString()));
     }
@@ -29,8 +30,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _getUserMoc(Emitter<UserState> emit) async {
     emit(UserLoading());
     try {
-      final List<Users> user = await userRepository.getUserMoc();
-      emit(UserLoaded(user: user));
+      final List<Products> product = await userRepository.getUserMoc();
+      emit(UserLoaded(user: product));
     } catch (e) {
       emit(UserError(errorMsg: e.toString()));
     }

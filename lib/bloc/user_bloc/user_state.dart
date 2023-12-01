@@ -1,3 +1,4 @@
+import 'package:bloc_state_management/models/product_model.dart';
 import 'package:bloc_state_management/models/user_model.dart';
 
 abstract class UserState {
@@ -9,7 +10,7 @@ class UserEmpty extends UserState {}
 class UserLoading extends UserState {}
 
 class UserLoaded extends UserState {
-  final List<Users> user;
+  final List<Products> user;
 
   UserLoaded({required this.user}) : super([user]);
 }

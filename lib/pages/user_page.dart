@@ -42,18 +42,146 @@ class _UserPageState extends State<UserPage> {
               return const Center(child: CircularProgressIndicator());
             }
             if (state is UserLoaded) {
-              return ListView.builder(
-                itemCount: state.user.length,
-                itemBuilder: (BuildContext context, int i) {
-                  var obj = state.user[i];
-                  return Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.person),
-                      title: Text(obj.title ?? '--'),
-                      subtitle: Text(obj.userId.toString()),
-                    ),
-                  );
-                },
+              return Padding(
+                padding: const EdgeInsets.only(top: 10.0, right: 5, left: 5),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    childAspectRatio: 11.0 / 6.0,
+                  ),
+                  itemCount: state.user.length,
+                  itemBuilder: (context, index) {
+                    var item = state.user[index];
+                    return InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          backgroundColor:
+                              const Color.fromARGB(255, 255, 255, 255),
+                          context: context,
+                          builder: (context) {
+                            return SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Container(
+                                color: const Color(0x99A4EBEE),
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  children: [
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: item.images.map((image) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.network(
+                                              image,
+                                              width: 100,
+                                              height: 200,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                    Text(
+                                      item.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(item.description.toString()),
+                                    Text('\$ ${item.price.toString()}'),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.star,
+                                                  color: Colors.yellow,
+                                                ),
+                                                Text(item.rating.toString()),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(item.discountPercentage
+                                                    .toString()),
+                                                const Icon(
+                                                  Icons.discount,
+                                                  color: Colors.blue,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Material(
+                        elevation: 10,
+                        child: Card(
+                          color: const Color.fromARGB(255, 157, 245, 240),
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                            children: [
+                              if (item.images.isNotEmpty &&
+                                  item.images[0] is String)
+                                Image.network(
+                                  item.images[0],
+                                  height: 100,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              const SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(item.title),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text('${item.price}  USD'),
+                                      const Icon(Icons.visibility),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      '${item.description}',
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
             }
             if (state is UserError) {

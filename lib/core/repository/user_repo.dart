@@ -1,5 +1,6 @@
 
 import 'package:bloc_state_management/core/network.dart';
+import 'package:bloc_state_management/models/product_model.dart';
 import 'package:bloc_state_management/models/user_model.dart';
 
 class UserRepository {
@@ -7,10 +8,10 @@ class UserRepository {
 
   UserRepository({required this.userApiClient});
 
-  Future<List<Users>> getuser() async {
+  Future<List<Products>> getuser() async {
     return userApiClient.fetchuser();
   }
-  Future<List<Users>> getUserMoc() async {
+  Future<List<Products>> getUserMoc() async {
     return userApiClient.fetchUserMoc();
   }
 }
